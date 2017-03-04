@@ -1,0 +1,40 @@
+\documentclass{article}
+% Remove the option hidelinks to make link boxes visible
+\usepackage[hidelinks]{hyperref}
+\usepackage{coqtheorem}
+
+\theoremstyle{coqtheorem}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{fact}[theorem]{Fact}
+
+% Note that the double braces are mandatory
+\setBaseUrl{{http://www.ps.uni-saarland.de/courses/cl-ss16/LectureNotes/html/}}
+\setCoqFilename{LectureNotes.Base}
+
+\begin{document}
+
+\begin{theorem}[DM_or]
+  DM for or holds.
+\end{theorem}
+
+\begin{lemma}
+  Some lemma that is not in Coq.
+\end{lemma}
+
+\setCoqFilename{LectureNotes.Chapter1}
+\begin{fact}[andb_com][Boolean and is commutative]
+  DM for and holds.
+\end{fact}
+
+In Theorem \ref{coq:DM_or} we say something about logical or, in
+Fact~\ref{coq:andb_com} something about boolean and.
+
+\end{document}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

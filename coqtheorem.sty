@@ -1,0 +1,53 @@
+\ProvidesPackage{coqtheorem}
+\RequirePackage{xparse}
+\RequirePackage{hyperref}
+\RequirePackage{mfirstuc}
+
+\newcommand{\setCoqFilename}[1]{\def\filename{#1}}
+\newcommand{\setBaseUrl}[1]{\def\baseurl#1}
+\setBaseUrl{}
+\setCoqFilename{}
+\def\theoremname{}
+\def\showname{}
+\def\theoremtype{}
+
+\@ifclassloaded{llncs}{
+  % If the class is LLNCS:
+  \let\theorem\relax
+  \let\lemma\relax
+  \let\definition\relax
+  \let\fact\relax
+  \let\corollary\relax
+
+  \spnewtheorem{theoremAux}{}{\bfseries\theoremtype}{\itshape}
+  \spnewtheorem{theoremAuxCoq}[theoremAux]{}{\bfseries \href{\baseurl\filename.html\#\theoremname}{\theoremtype}}{{\bfseries\showname}\itshape\label{coq:\theoremname}}
+
+  \newcommand{\genFancyTheoremEnvironment}[1]{%
+    \NewDocumentEnvironment{#1}{oo}%
+    {%
+      \def\theoremtype{\capitalisewords{#1}}%
+      \IfValueTF{##1}{\def\theoremname{##1}%
+        \IfValueT{##2}{\def\showname{\hspace{-0.6em} (##2)~}}
+        \theoremAuxCoq}%
+      {\theoremAux}%
+    }%
+    {\def\theoremname{}\def\showname{}}}
+
+  \genFancyTheoremEnvironment{theorem}
+  \genFancyTheoremEnvironment{lemma}
+  \genFancyTheoremEnvironment{definition}
+  \genFancyTheoremEnvironment{fact}
+  \genFancyTheoremEnvironment{corollary}
+}{
+  % If not LLNCS
+
+  \RequirePackage{ntheorem}
+
+  \newtheoremstyle{coqtheorem}
+  {\linkableTheoremAux{##1}{##2}}
+  {\linkableTheoremAux{##1}{##2}[##3]}
+  \NewDocumentCommand\linkableTheoremAux{mmou\ignorespaces o}
+  {\item[\hskip\labelsep \theorem@headerfont
+    \IfValueTF{#3}{\href{\baseurl\filename.html\##3}{#1\ #2\IfValueT{#5}{\ (#5)}{}}}{#1\ #2 \IfValueT{#5}{\ (#5)}{}}
+    \theorem@separator]#4\ignorespaces\IfValueT{#3}{\label{coq:#3}}}
+}
