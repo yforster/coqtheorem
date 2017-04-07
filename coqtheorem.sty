@@ -48,6 +48,8 @@
   {\linkableTheoremAux{##1}{##2}[##3]}
   \NewDocumentCommand\linkableTheoremAux{mmou\ignorespaces o}
   {\item[\hskip\labelsep \theorem@headerfont
-    \IfValueTF{#3}{\href{\baseurl\filename.html\##3}{#1\ #2\IfValueT{#5}{\ (#5)}{}}}{#1\ #2 \IfValueT{#5}{\ (#5)}{}}
-    \theorem@separator]#4\ignorespaces\IfValueT{#3}{\label{coq:#3}}}
+    \IfValueTF{#5}{\href{\baseurl\filename.html\##5}{#1\
+        #2\IfValueT{#3}{\ifx&#3&%
+          \else\ (#3)\fi}{}}}{#1\ #2 \IfValueT{#3}{\ (#3)}{}}
+    \theorem@separator]#4\ignorespaces\IfValueT{#5}{\label{coq:#5}}}
 }
