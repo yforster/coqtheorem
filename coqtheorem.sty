@@ -11,6 +11,14 @@
 \def\showname{}
 \def\theoremtype{}
 
+\newcommand{\coqlink}[2][]{\href{\baseurl\filename.html\##1}{#2}}
+
+\@ifpackageloaded{paralist}{%
+  \newcommand{\coqitem}[1]{\stepcounter{enumi}\item[{\coqlink[#1]{\labelenumi}}]}
+}{%
+  \newcommand{\coqitem}[1]{\stepcounter{enumi}\item[{\coqlink[#1]{\enumi}}]}
+}%
+
 \@ifclassloaded{llncs}{
   % If the class is LLNCS:
   \let\theorem\relax
@@ -20,7 +28,7 @@
   \let\corollary\relax
 
   \spnewtheorem{theoremAux}{}{\bfseries\theoremtype}{\itshape}
-  \spnewtheorem{theoremAuxCoq}[theoremAux]{}{\bfseries \href{\baseurl\filename.html\#\theoremname}{\theoremtype}}{{\bfseries\showname}\itshape\label{coq:\theoremname}}
+  \spnewtheorem{theoremAuxCoq}[theoremAux]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\label{coq:\theoremname}}
 
   \newcommand{\genFancyTheoremEnvironment}[1]{%
     \NewDocumentEnvironment{#1}{oo}%
@@ -48,7 +56,7 @@
   {\linkableTheoremAux{##1}{##2}[##3]}
   \NewDocumentCommand\linkableTheoremAux{mmou\ignorespaces o}
   {\item[\hskip\labelsep \theorem@headerfont
-    \IfValueTF{#5}{\href{\baseurl\filename.html\##5}{#1\
+    \IfValueTF{#5}{\coqlink[#5]{#1\
         #2\IfValueT{#3}{\ifx&#3&%
           \else\ (#3)\fi}{}}}{#1\ #2 \IfValueT{#3}{\ (#3)}{}}
     \theorem@separator]#4\ignorespaces\IfValueT{#5}{\label{coq:#5}}}
