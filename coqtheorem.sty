@@ -14,9 +14,9 @@
 \newcommand{\coqlink}[2][]{\href{\baseurl\filename.html\##1}{#2}}
 
 \@ifpackageloaded{paralist}{%
-  \newcommand{\coqitem}[1]{\stepcounter{enumi}\item[{\coqlink[#1]{\labelenumi}}]}
+  \newcommand{\coqitem}[1][]{\stepcounter{enumi}\item[{\coqlink[#1]{\labelenumi}}]}
 }{%
-  \newcommand{\coqitem}[1]{\stepcounter{enumi}\item[{\coqlink[#1]{\enumi}}]}
+  \newcommand{\coqitem}[1][]{\stepcounter{enumi}\item[{\coqlink[#1]{\theenumi.}}]}
 }%
 
 \@ifclassloaded{llncs}{

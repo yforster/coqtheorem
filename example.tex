@@ -25,7 +25,15 @@
 
 \setCoqFilename{LectureNotes.Chapter1}
 \begin{fact}[Boolean and is commutative][andb_com]
-  DM for and holds.
+  Commutativity for and holds.
+\end{fact}
+
+\begin{fact}~
+  \begin{enumerate}
+  \coqitem[plus_O] $x + 0 = x$
+  \coqitem[plus_S] $x + S y = S (x + y)$
+  \item Thus $x + y = y + x$ (\coqlink[plus_com]{Link})
+\end{enumerate}
 \end{fact}
 
 In Theorem \ref{coq:DM_or} we say something about logical or, in
