@@ -19,6 +19,14 @@
   \newcommand{\coqitem}[1][]{\stepcounter{enumi}\item[{\coqlink[#1]{\theenumi.}}]}
 }%
 
+\newcommand*\ifcounter[1]{%
+  \ifcsname c@#1\endcsname
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+}
+
 \@ifclassloaded{llncs}{
   % If the class is LLNCS:
   \let\theorem\relax
@@ -29,7 +37,8 @@
 
   \newcommand{\genFancyTheoremEnvironment}[1]{%
     \expandafter\newcommand\csname #1AuxCoqautorefname\endcsname{\csname #1autorefname\endcsname}
-    \spnewtheorem{#1Aux}{}{\bfseries\theoremtype}{\itshape}
+    \ifcounter{#1}{}{\newcounter{#1}}
+    \spnewtheorem{#1Aux}{#1}{\bfseries\theoremtype}{\itshape}
     \spnewtheorem{#1AuxCoq}[#1Aux]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\label{coq:\theoremname}}
     \NewDocumentEnvironment{#1}{oo}%
     {%
