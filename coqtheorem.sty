@@ -27,19 +27,19 @@
   \let\fact\relax
   \let\corollary\relax
 
+  \spnewtheorem{dummy}{}{}{}
+
   \newcommand{\genFancyTheoremEnvironment}[1]{%
-    \spnewtheorem{#1Aux}{}{\bfseries\theoremtype}{\itshape}
-    \spnewtheorem{#1AuxCoq}[#1Aux]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\label{coq:\theoremname}}
+    \spnewtheorem{#1Aux}[dummy]{}{\bfseries\theoremtype}{{\bfseries\showname}\itshape}
+    \spnewtheorem{#1AuxCoq}[dummy]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\label{coq:\theoremname}}
     \NewDocumentEnvironment{#1}{oo}%
     {%
-      \def\theoremtype{\capitalisewords{#1}}%
-      \IfValueTF{##2}{\def\theoremname{##2}%
-        \IfValueT{##1}{\ifx&##1&%
+      \IfValueT{##1}{\ifx&##1&%
           \else\def\showname{\hspace{-0.6em} (##1)~}\fi}%
-        \begin{#1AuxCoq}}
-      {\begin{#1Aux}}%
+      \def\theoremtype{\capitalisewords{#1}}%
+      \IfValueTF{##2}{\def\theoremname{##2}\begin{#1AuxCoq}}{\begin{#1Aux}}%
     }%
-    {\IfValueTF{##1}{\end{#1AuxCoq}}{\end{#1Aux}}\def\theoremname{}\def\showname{}}}
+    {\IfValueTF{##2}{\end{#1AuxCoq}}{\end{#1Aux}}\def\theoremname{}\def\showname{}}}
 
   \genFancyTheoremEnvironment{theorem}
   \genFancyTheoremEnvironment{lemma}
