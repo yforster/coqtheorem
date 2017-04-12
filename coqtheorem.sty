@@ -28,6 +28,7 @@
   \let\corollary\relax
 
   \newcommand{\genFancyTheoremEnvironment}[1]{%
+    \expandafter\newcommand\csname #1AuxCoqautorefname\endcsname{\csname #1autorefname\endcsname}
     \spnewtheorem{#1Aux}{}{\bfseries\theoremtype}{\itshape}
     \spnewtheorem{#1AuxCoq}[#1Aux]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\label{coq:\theoremname}}
     \NewDocumentEnvironment{#1}{oo}%
