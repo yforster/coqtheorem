@@ -1,0 +1,51 @@
+\documentclass{article}
+% Remove the option hidelinks to make link boxes visible
+\usepackage[hidelinks]{hyperref}
+\usepackage{amsthm}
+\usepackage{coqtheorem}
+
+\theoremstyle{coqtheorem}
+\newcoqtheorem{theorem}{Theorem}
+\newcoqtheorem{lemma}{Lemma}
+\newcoqtheorem{corollary}{Corollary}
+\newcoqtheorem{fact}{Fact}
+
+% Note that the double braces are mandatory
+\setBaseUrl{{http://www.ps.uni-saarland.de/courses/cl-ss16/LectureNotes/html/}}
+\setCoqFilename{LectureNotes.Base}
+
+\begin{document}
+
+% Leave the name field empty if you do not want a name
+\begin{theorem}[][DM_or]
+  DM for or holds.
+\end{theorem}
+
+\begin{lemma}[Name]
+  Some lemma that is not in Coq.
+\end{lemma}
+
+\setCoqFilename{LectureNotes.Chapter1}
+\begin{lemma}[Boolean and is commutative][andb_com]
+  Commutativity for and holds.
+\end{lemma}
+
+\begin{fact}~
+  \begin{enumerate}
+    \coqitem[plus_O] $x + 0 = x$
+    \coqitem[plus_S] $x + S y = S (x + y)$
+    \item Thus $x + y = y + x$ (\coqlink[plus_com]{Link})
+  \end{enumerate}
+\end{fact}
+
+In Theorem \ref{coq:DM_or} we say something about logical or, in
+Fact~\ref{coq:andb_com} something about boolean and.
+
+\end{document}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

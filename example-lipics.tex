@@ -1,12 +1,6 @@
-\documentclass{article}
+\documentclass[a4paper,UKenglish]{lipics-v2016}
 % Remove the option hidelinks to make link boxes visible
-\usepackage[hidelinks]{hyperref}
-\usepackage{coqtheorem}
-
-\theoremstyle{coqtheorem}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{fact}[theorem]{Fact}
+\usepackage[countsame]{coqtheorem}
 
 % Note that the double braces are mandatory
 \setBaseUrl{{http://www.ps.uni-saarland.de/courses/cl-ss16/LectureNotes/html/}}
@@ -24,17 +18,17 @@
 \end{lemma}
 
 \setCoqFilename{LectureNotes.Chapter1}
-\begin{fact}[Boolean and is commutative][andb_com]
+\begin{lemma}[Boolean and is commutative][andb_com]
   Commutativity for and holds.
-\end{fact}
+\end{lemma}
 
-\begin{fact}~
+\begin{lemma}
   \begin{enumerate}
   \coqitem[plus_O] $x + 0 = x$
   \coqitem[plus_S] $x + S y = S (x + y)$
   \item Thus $x + y = y + x$ (\coqlink[plus_com]{Link})
 \end{enumerate}
-\end{fact}
+\end{lemma}
 
 In Theorem \ref{coq:DM_or} we say something about logical or, in
 Fact~\ref{coq:andb_com} something about boolean and.
