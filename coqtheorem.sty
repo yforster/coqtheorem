@@ -74,6 +74,6 @@
   {\item[\hskip\labelsep \theorem@headerfont
     \IfValueTF{#5}{\coqlink[#5]{#1\
         #2\IfValueT{#3}{\ifx&#3&%
-          \else\ (#3)\fi}{}}}{#1\ #2 \IfValueT{#3}{\ (#3)}{}}
+          \else\ (#3)\fi}{}}}{#1\ #2 \IfValueT{#3}{(#3)}{}}
     \theorem@separator]#4\ignorespaces\IfValueT{#5}{\label{coq:#5}}}
 }
