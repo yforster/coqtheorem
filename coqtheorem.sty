@@ -169,34 +169,34 @@
     \theoremstyle{coqtheorem}
     \ifcsdef{nocountsections}{\newtheorem{dummy}{Dummy}}{\newtheorem{dummy}{Dummy}[section]}
 
-    \newcommand{\newcoqtheorem}[2]{%
-      \expandafter\newcommand\csname #1Auxautorefname\endcsname{\csname #1autorefname\endcsname}
-      \newcounter{#1}
+    
+    \NewDocumentCommand{\newcoqtheorem}{smm}{%
+      \expandafter\newcommand\csname #2Auxautorefname\endcsname{\csname #2autorefname\endcsname}
+      \newcounter{#2}
       \ifcsdef{countsame}
       {
-        \newtheorem{#1Aux}[dummy]{#2}
+        \IfBooleanTF{#1}{\newtheorem*{#2Aux}[dummy]{#3}}{\newtheorem{#2Aux}[dummy]{#3}}
       }
       {
         \ifcsdef{nocountsections}
         {
-          \newtheorem{#1Aux}[#1]{#2}
+          \IfBooleanTF{#1}{\newtheorem*{#2Aux}[#2]{#3}}{\newtheorem{#2Aux}[#2]{#3}}
         }
         {
-          \newtheorem{#1Aux}{#2}[section]
+          \IfBooleanTF{#1}{\newtheorem*{#2Aux}{#3}}{\newtheorem{#2Aux}{#3}[section]}
         }
-
       }
       
-      \NewDocumentEnvironment{#1}{oo}%
+      \NewDocumentEnvironment{#2}{oo}%
       {%
         \IfValueT{##2}{\def\theoremname{##2}}%
         \IfValueTF{##1}{\ifx&##1&%
-          \begin{#1Aux}[]%
-            \else\begin{#1Aux}[##1]\fi}%
-            {\begin{#1Aux}[]}
+          \begin{#2Aux}[]%
+            \else\begin{#2Aux}[##1]\fi}%
+            {\begin{#2Aux}[]}
               \IfValueT{##2}{\label{coq:##2}}%
             }%
-            {\end{#1Aux}\def\theoremname{}}}
+            {\end{#2Aux}\def\theoremname{}}}
     }
     {
 
