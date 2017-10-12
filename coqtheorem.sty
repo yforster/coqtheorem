@@ -3,9 +3,13 @@
 \RequirePackage{hyperref}
 \RequirePackage{mfirstuc}
 \RequirePackage{etoolbox}
+\RequirePackage{suffix}
 
 \DeclareOption{countsame}{
   \def\countsame{}
+}
+\DeclareOption{nosections}{
+  \let\nocountsections\relax
 }
 \ProcessOptions\relax
 
@@ -33,8 +37,14 @@
   \fi
 }
 
-\@ifclassloaded{llncs}{
-  % If the class is LLNCS:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% If the loaded class is Springer's LLNCS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\@ifclassloaded{llncs}
+{
+  \def\ok{}
+  
   \let\theorem\relax
   \let\lemma\relax
   \let\definition\relax
@@ -55,21 +65,27 @@
     \NewDocumentEnvironment{#1}{oo}%
     {%
       \IfValueT{##1}{\ifx&##1&%
-          \else\def\showname{\hspace{-0.6em} (##1)~}\fi}%
+        \else\def\showname{\hspace{-0.6em} (##1)~}\fi}%
       \def\theoremtype{\capitalisewords{#1}}%
       \IfValueTF{##2}{\def\theoremname{##2}\begin{#1AuxCoq}}{\begin{#1Aux}}%
-    }%
-    {\IfValueTF{##2}{\end{#1AuxCoq}}{\end{#1Aux}}\def\theoremname{}\def\showname{}}}
+        }%
+        {\IfValueTF{##2}{\end{#1AuxCoq}}{\end{#1Aux}}\def\theoremname{}\def\showname{}}}
 
   \genFancyTheoremEnvironment{theorem}
   \genFancyTheoremEnvironment{lemma}
   \genFancyTheoremEnvironment{definition}
   \genFancyTheoremEnvironment{fact}
   \genFancyTheoremEnvironment{corollary}
-}{}
+}
+{}
 
-\@ifclassloaded{lipics-v2016}{
-  % If lipics is used
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% If the loaded class is Leibniz Center's LIPIcs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\@ifclassloaded{lipics-v2016}
+{
+  \def\ok{}
 
   \thm@headfont{%
     \textcolor{darkgray}{$\blacktriangleright$}\nobreakspace\sffamily\bfseries}
@@ -90,10 +106,10 @@
   \let\corollary\relax
 
   \newtheoremstyle{coqtheorem}%
-      {}{}%
-      {\itshape}{}%
-      {\textcolor{darkgray}{$\blacktriangleright$}\nobreakspace\sffamily\bfseries}{.}%  % Note that final punctuation is omitted.
-      {.5em}{\coqlink[\theoremname]{\thmname{#1}\thmnumber{ #2}}\normalfont\sffamily\thmnote{ (#3)}}
+  {}{}%
+  {\itshape}{}%
+  {\textcolor{darkgray}{$\blacktriangleright$}\nobreakspace\sffamily\bfseries}{.}%  % Note that final punctuation is omitted.
+  {.5em}{\coqlink[\theoremname]{\thmname{#1}\thmnumber{ #2}}\normalfont\sffamily\thmnote{ (#3)}}
 
   \theoremstyle{coqtheorem}
   \newtheorem{dummy}{}
@@ -107,56 +123,145 @@
       \IfValueTF{##1}{\ifx&##1&%
         \begin{#1Aux}[]%
           \else\begin{#1Aux}[##1]\fi}%
-        {\begin{#1Aux}[]}
-      \IfValueT{##2}{\label{coq:##2}}%
-    }%
-    {\end{#1Aux}\def\theoremname{}}}
+          {\begin{#1Aux}[]}
+            \IfValueT{##2}{\label{coq:##2}}%
+          }%
+          {\end{#1Aux}\def\theoremname{}}}
 
-    \genFancyTheoremEnvironment{theorem}
-    \genFancyTheoremEnvironment{lemma}
-    \genFancyTheoremEnvironment{corollary}
-    \genFancyTheoremEnvironment{fact}
-  }
+      \genFancyTheoremEnvironment{theorem}
+      \genFancyTheoremEnvironment{lemma}
+      \genFancyTheoremEnvironment{corollary}
+      \genFancyTheoremEnvironment{fact}
+}
 {
+  
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %%%%% If the loaded class is ACM's acmart
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \@ifclassloaded{acmart}
+  {
+    \def\ok{}
+    \let\c@theorem\relax
 
-\@ifpackageloaded{amsthm}{
-  \let\theorem\relax
-  \let\c@theorem\relax
-  \let\lemma\relax
-  \let\corollary\relax
+    \let\theorem\relax
+    \let\lemma\relax
+    \let\corollary\relax
+    % \let\theorem\relax
+    % \let\c@theorem\relax
+    % \let\lemma\relax
+    % \let\corollary\relax
 
-  \def\theoremname{}
+    \def\theoremname{}
 
-  \newtheoremstyle{coqtheorem}%
-      {}{}%
-      {\itshape}{}%
-      {\bfseries}{.}%  % Note that final punctuation is omitted.
-      {.5em}{\coqlink[\theoremname]{\thmname{#1}\thmnumber{ #2}}\normalfont\thmnote{ (#3)}}
+    \newtheoremstyle{coqtheorem}%
+    {.5\baselineskip\@plus.2\baselineskip
+      \@minus.2\baselineskip}% space above
+    {.5\baselineskip\@plus.2\baselineskip
+      \@minus.2\baselineskip}% space below
+    {\@acmplainbodyfont}% body font
+    {\@acmplainindent}% indent amount
+    {\@acmplainheadfont}% head font
+    {.}% punctuation after head
+    {.5em}% spacing after head
+    {\coqlink[\theoremname]{\thmname{#1}\thmnumber{ #2}}\thmnote{ {\@acmplainnotefont(#3)}}}% head spec
 
-  \theoremstyle{coqtheorem}
-  \newtheorem{dummy}{}
+    \theoremstyle{coqtheorem}
+    \ifcsdef{nocountsections}{\newtheorem{dummy}{Dummy}}{\newtheorem{dummy}{Dummy}[section]}
 
-  \newcommand{\newcoqtheorem}[2]{%
-    \expandafter\newcommand\csname #1Auxautorefname\endcsname{\csname #1autorefname\endcsname}
-    \newcounter{#1}
-    \newtheorem{#1Aux}[\ifcsdef{countsame}{dummy}{#1}]{#2}
-    \NewDocumentEnvironment{#1}{oo}%
-    {%
-      \IfValueT{##2}{\def\theoremname{##2}}%
-      \IfValueTF{##1}{\ifx&##1&%
-        \begin{#1Aux}[]%
-          \else\begin{#1Aux}[##1]\fi}%
-        {\begin{#1Aux}[]}
-      \IfValueT{##2}{\label{coq:##2}}%
-    }%
-    {\end{#1Aux}\def\theoremname{}}}
-  }
-  {}
+    \newcommand{\newcoqtheorem}[2]{%
+      \expandafter\newcommand\csname #1Auxautorefname\endcsname{\csname #1autorefname\endcsname}
+      \newcounter{#1}
+      \ifcsdef{countsame}
+      {
+        \newtheorem{#1Aux}[dummy]{#2}
+      }
+      {
+        \ifcsdef{nocountsections}
+        {
+          \newtheorem{#1Aux}[#1]{#2}
+        }
+        {
+          \newtheorem{#1Aux}{#2}[section]
+        }
 
+      }
+      
+      \NewDocumentEnvironment{#1}{oo}%
+      {%
+        \IfValueT{##2}{\def\theoremname{##2}}%
+        \IfValueTF{##1}{\ifx&##1&%
+          \begin{#1Aux}[]%
+            \else\begin{#1Aux}[##1]\fi}%
+            {\begin{#1Aux}[]}
+              \IfValueT{##2}{\label{coq:##2}}%
+            }%
+            {\end{#1Aux}\def\theoremname{}}}
+    }
+    {
+
+      
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+      %%%%% If no known class is loaded, but the amsthm package
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      
+      \@ifpackageloaded{amsthm}{
+        \def\ok{}
+        \let\theorem\relax
+        \let\c@theorem\relax
+        \let\lemma\relax
+        \let\corollary\relax
+
+        \def\theoremname{}
+
+        \newtheoremstyle{coqtheorem}%
+        {}{}%
+        {\itshape}{}%
+        {\bfseries}{.}%  % Note that final punctuation is omitted.
+        {.5em}{\coqlink[\theoremname]{\thmname{#1}\thmnumber{ #2}}\normalfont\thmnote{ (#3)}}
+
+        \theoremstyle{coqtheorem}
+        \newtheorem{dummy}{}
+
+        \newcommand{\newcoqtheorem}[2]{%
+          \expandafter\newcommand\csname #1Auxautorefname\endcsname{\csname #1autorefname\endcsname}
+          \newcounter{#1}
+          \newtheorem{#1Aux}[\ifcsdef{countsame}{dummy}{#1}]{#2}
+          \NewDocumentEnvironment{#1}{oo}%
+          {%
+            \IfValueT{##2}{\def\theoremname{##2}}%
+            \IfValueTF{##1}{\ifx&##1&%
+              \begin{#1Aux}[]%
+                \else\begin{#1Aux}[##1]\fi}%
+                {\begin{#1Aux}[]}
+                  \IfValueT{##2}{\label{coq:##2}}%
+                }%
+                {\end{#1Aux}\def\theoremname{}}}
+      }
+      {
+        % Fallthrough
+      }
+   }
 }
 
-\@ifpackageloaded{ntheorem}{
-  % If ntheorem is used
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%% If no known class is loaded, but the ntheorem package
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+
+\ifcsdef{ok}
+{
+  
+}
+{
+  % If no known class or package is loaded, load ntheorem
+  \RequirePackage{ntheorem}
+  \PackageWarning{coqtheorem}{No known class or package was loaded. Loading ntheorem}{}
+}
+\@ifpackageloaded{ntheorem}
+{
+  \def\ok{}
+  
   \newtheoremstyle{coqtheorem}
   {\linkableTheoremAux{##1}{##2}}
   {\linkableTheoremAux{##1}{##2}[##3]}
