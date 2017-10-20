@@ -175,7 +175,7 @@
       \newcounter{#2}
       \ifcsdef{countsame}
       {
-        \IfBooleanTF{#1}{\newtheorem*{#2Aux}[dummy]{#3}}{\newtheorem{#2Aux}[dummy]{#3}}
+        \IfBooleanTF{#1}{\newtheorem*{#2Aux}{#3}}{\newtheorem{#2Aux}[dummy]{#3}}
       }
       {
         \ifcsdef{nocountsections}
