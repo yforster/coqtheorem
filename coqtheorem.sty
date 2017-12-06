@@ -8,6 +8,9 @@
 \DeclareOption{countsame}{
   \def\countsame{}
 }
+\DeclareOption{hidelinks}{
+  \def\hidecoqtheoremlinks
+}
 \DeclareOption{nosections}{
   \let\nocountsections\relax
 }
@@ -18,8 +21,11 @@
 \setBaseUrl{{}}
 \setCoqFilename{}
 
-\newcommand{\coqlink}[2][]{\ifx#1\empty%
-  #2\else{\href{\baseurl\filename.html\##1}{#2}}\fi}
+\ifcsdef{hidecoqtheoremlinks}
+{\newcommand{\coqlink}[2][]{{\hypersetup{hidelinks}\ifx#1\empty%
+    #2\else{\href{\baseurl\filename.html\##1}{#2}}\fi}}}
+{\newcommand{\coqlink}[2][]{\ifx#1\empty%
+    #2\else{\href{\baseurl\filename.html\##1}{#2}}\fi}}
 
 \@ifpackageloaded{paralist}{%
   \newcommand{\coqitem}[1][]{\stepcounter{enumi}\item[{\coqlink[#1]{\labelenumi}}]}
