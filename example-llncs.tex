@@ -1,6 +1,7 @@
 \documentclass{llncs}
 % Remove the option hidelinks to make link boxes visible
 \usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
 \usepackage[countsame]{coqtheorem}
 
 % Note that the double braces are mandatory
@@ -8,7 +9,6 @@
 \setCoqFilename{LectureNotes.Base}
 
 \begin{document}
-
 
 % Leave the name field empty if you do not want a name
 \begin{theorem}[][DM_or]
@@ -32,7 +32,7 @@
 \end{enumerate}
 \end{fact}
 
-In \autoref{coq:DM_or} we say something about logical or, in
+In \cref{coq:DM_or} we say something about logical or, in
 \autoref{coq:andb_com} something about boolean and.
 
 \end{document}

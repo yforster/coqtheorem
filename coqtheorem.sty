@@ -68,7 +68,14 @@
     \expandafter\providecommand\csname #1autorefname\endcsname{\capitalisewords{#1}}
     \expandafter\newcommand\csname #1Auxautorefname\endcsname{\csname #1autorefname\endcsname}
     \expandafter\newcommand\csname #1AuxCoqautorefname\endcsname{\csname #1autorefname\endcsname}
+
     \ifcounter{#1}{}{\newcounter{#1}}
+
+    
+    \@ifpackageloaded{cleveref}{
+      \crefformat{#1AuxCoq}{\capitalisewords{#1}~##2##1##3}
+    }{}
+    
     \spnewtheorem{#1Aux}[\ifcsdef{countsame}{dummy}{#1}]{}{\bfseries\theoremtype}{{\bfseries\showname}\itshape}
     \spnewtheorem{#1AuxCoq}[#1Aux]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\label{coq:\theoremname}}
     \NewDocumentEnvironment{#1}{oo}%
@@ -127,6 +134,11 @@
     \expandafter\providecommand\csname #1autorefname\endcsname{\capitalisewords{#1}}
     \expandafter\newcommand\csname #1Auxautorefname\endcsname{\csname #1autorefname\endcsname}
     \expandafter\newcommand\csname #1AuxCoqautorefname\endcsname{\csname #1autorefname\endcsname}
+
+    \@ifpackageloaded{cleveref}{
+      \crefformat{#1Aux}{\capitalisewords{#1}~##2##1##3}
+    }{}
+    
     \newtheorem{#1Aux}[dummy]{\capitalisewords{#1}}
     \NewDocumentEnvironment{#1}{oo}%
     {%
@@ -186,6 +198,11 @@
       \expandafter\newcommand\csname #2Auxautorefname\endcsname{\csname #2autorefname\endcsname}
       \expandafter\newcommand\csname #2AuxCoqautorefname\endcsname{\csname #2autorefname\endcsname}
 
+      
+      \@ifpackageloaded{cleveref}{
+        \crefformat{#2Aux}{\capitalisewords{#2}~##2##1##3}
+      }{}
+
       \newcounter{#2}
       \ifcsdef{countsame}
       {
@@ -242,6 +259,11 @@
           \expandafter\newcommand\csname #1Auxautorefname\endcsname{\csname #1autorefname\endcsname}
           \expandafter\newcommand\csname #1AuxCoqautorefname\endcsname{\csname #1autorefname\endcsname}
           \newcounter{#1}
+
+          \@ifpackageloaded{cleveref}{
+            \crefformat{#1Aux}{\capitalisewords{#1}~##2##1##3}
+          }{}
+          
           \newtheorem{#1Aux}[\ifcsdef{countsame}{dummy}{#1}]{#2}
           \NewDocumentEnvironment{#1}{oo}%
           {%
