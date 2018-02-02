@@ -49,6 +49,7 @@
 
 \@ifclassloaded{llncs}
 {
+  \patchcmd{\@spthm}{\phantomsection}{}{}{}
   \def\ok{}
   
   \let\theorem\relax
@@ -64,6 +65,8 @@
   \spnewtheorem{dummy}{}{}{}
 
   \newcommand{\genFancyTheoremEnvironment}[1]{%
+    \expandafter\providecommand\csname #1autorefname\endcsname{\capitalisewords{#1}}
+    \expandafter\newcommand\csname #1Auxautorefname\endcsname{\csname #1autorefname\endcsname}
     \expandafter\newcommand\csname #1AuxCoqautorefname\endcsname{\csname #1autorefname\endcsname}
     \ifcounter{#1}{}{\newcounter{#1}}
     \spnewtheorem{#1Aux}[\ifcsdef{countsame}{dummy}{#1}]{}{\bfseries\theoremtype}{{\bfseries\showname}\itshape}
@@ -121,7 +124,9 @@
   \newtheorem{dummy}{}
 
   \newcommand{\genFancyTheoremEnvironment}[1]{%
+    \expandafter\providecommand\csname #1autorefname\endcsname{\capitalisewords{#1}}
     \expandafter\newcommand\csname #1Auxautorefname\endcsname{\csname #1autorefname\endcsname}
+    \expandafter\newcommand\csname #1AuxCoqautorefname\endcsname{\csname #1autorefname\endcsname}
     \newtheorem{#1Aux}[dummy]{\capitalisewords{#1}}
     \NewDocumentEnvironment{#1}{oo}%
     {%
@@ -177,7 +182,10 @@
 
     
     \NewDocumentCommand{\newcoqtheorem}{smm}{%
+      \expandafter\providecommand\csname #2autorefname\endcsname{\capitalisewords{#2}}
       \expandafter\newcommand\csname #2Auxautorefname\endcsname{\csname #2autorefname\endcsname}
+      \expandafter\newcommand\csname #2AuxCoqautorefname\endcsname{\csname #2autorefname\endcsname}
+
       \newcounter{#2}
       \ifcsdef{countsame}
       {
@@ -230,7 +238,9 @@
         \newtheorem{dummy}{}
 
         \newcommand{\newcoqtheorem}[2]{%
+          \expandafter\providecommand\csname #1autorefname\endcsname{\capitalisewords{#1}}
           \expandafter\newcommand\csname #1Auxautorefname\endcsname{\csname #1autorefname\endcsname}
+          \expandafter\newcommand\csname #1AuxCoqautorefname\endcsname{\csname #1autorefname\endcsname}
           \newcounter{#1}
           \newtheorem{#1Aux}[\ifcsdef{countsame}{dummy}{#1}]{#2}
           \NewDocumentEnvironment{#1}{oo}%
