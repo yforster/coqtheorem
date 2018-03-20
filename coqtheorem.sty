@@ -5,6 +5,10 @@
 \RequirePackage{etoolbox}
 \RequirePackage{suffix}
 
+
+\DeclareOption{nolabels}{
+  \def\nolabels{}
+}
 \DeclareOption{countsame}{
   \def\countsame{}
 }
@@ -20,6 +24,8 @@
 \newcommand{\setBaseUrl}[1]{\def\baseurl#1}
 \setBaseUrl{{}}
 \setCoqFilename{}
+
+\ifcsdef{nolabels}{\newcommand{\insertlabel}[1]{}}{\newcommand{\insertlabel}[1]{\label{coq:#1}}}
 
 \ifcsdef{hidecoqtheoremlinks}
 {\newcommand{\coqlink}[2][]{{\hypersetup{hidelinks}\ifx{#1}\empty%
@@ -77,7 +83,7 @@
     }{}
     
     \spnewtheorem{#1Aux}[\ifcsdef{countsame}{dummy}{#1}]{}{\bfseries\theoremtype}{{\bfseries\showname}\itshape}
-    \spnewtheorem{#1AuxCoq}[#1Aux]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\label{coq:\theoremname}}
+    \spnewtheorem{#1AuxCoq}[#1Aux]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\insertlabel{\theoremname}}
     \NewDocumentEnvironment{#1}{oo}%
     {%
       \IfValueT{##1}{\ifx&##1&%
@@ -120,7 +126,7 @@
     \ifcounter{#1}{}{\newcounter{#1}}
     
     \spnewtheorem{#1Aux}[\ifcsdef{countsame}{dummy}{#1}]{}{\bfseries\theoremtype}{{\bfseries\showname}\itshape}{}{}
-    \spnewtheorem{#1AuxCoq}[dummy]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\label{coq:\theoremname}}
+    \spnewtheorem{#1AuxCoq}[dummy]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\insertlabel{\theoremname}}
     \NewDocumentEnvironment{#1}{oo}%
     {%
       \IfValueT{##1}{\ifx&##1&%
@@ -189,7 +195,7 @@
         \begin{#1Aux}[]%
           \else\begin{#1Aux}[##1]\fi}%
           {\begin{#1Aux}[]}
-            \IfValueT{##2}{\label{coq:##2}}%
+            \IfValueT{##2}{\insertlabel{##2}}%
           }%
           {\end{#1Aux}\def\theoremname{}}}
 
@@ -267,7 +273,7 @@
           \begin{#2Aux}[]%
             \else\begin{#2Aux}[##1]\fi}%
             {\begin{#2Aux}[]}
-              \IfValueT{##2}{\label{coq:##2}}%
+              \IfValueT{##2}{\insertlabel{##2}}%
             }%
             {\end{#2Aux}\def\theoremname{}}}
     }
@@ -314,7 +320,7 @@
               \begin{#1Aux}[]%
                 \else\begin{#1Aux}[##1]\fi}%
                 {\begin{#1Aux}[]}
-                  \IfValueT{##2}{\label{coq:##2}}%
+                  \IfValueT{##2}{\insertlabel{##2}}%
                 }%
                 {\end{#1Aux}\def\theoremname{}}}
       }
@@ -350,5 +356,5 @@
     \IfValueTF{#5}{\coqlink[#5]{#1\
         #2\IfValueT{#3}{\ifx&#3&%
           \else\ (#3)\fi}{}}}{#1\ #2 \IfValueT{#3}{(#3)}{}}
-    \theorem@separator]#4\ignorespaces\IfValueT{#5}{\label{coq:#5}}}
+    \theorem@separator]#4\ignorespaces\IfValueT{#5}{\insertlabel{#5}}}
 }{}
