@@ -22,9 +22,9 @@
 \setCoqFilename{}
 
 \ifcsdef{hidecoqtheoremlinks}
-{\newcommand{\coqlink}[2][]{{\hypersetup{hidelinks}\ifx#1\empty%
+{\newcommand{\coqlink}[2][]{{\hypersetup{hidelinks}\ifx{#1}\empty%
     #2\else{\href{\baseurl\filename.html\##1}{#2}}\fi}}}
-{\newcommand{\coqlink}[2][]{\ifx#1\empty%
+{\newcommand{\coqlink}[2][]{\ifx{#1}\empty%
     #2\else{\href{\baseurl\filename.html\##1}{#2}}\fi}}
 
 \@ifpackageloaded{paralist}{%
@@ -93,6 +93,48 @@
   \genFancyTheoremEnvironment{fact}
   \genFancyTheoremEnvironment{corollary}
 }
+{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% If the loaded class is Springer's svjour3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\@ifclassloaded{svjour3}
+{
+  \patchcmd{\@spthm}{\phantomsection}{}{}{}
+  \def\ok{}
+  
+  \let\theorem\relax
+  \let\lemma\relax
+  \let\definition\relax
+  \let\fact\relax
+  \let\corollary\relax
+
+  \def\theoremname{}
+  \def\showname{}
+  \def\theoremtype{}
+
+  \spnewtheorem{dummy}{}{}{}
+
+  \newcommand{\genFancyTheoremEnvironment}[1]{%
+    \ifcounter{#1}{}{\newcounter{#1}}
+    
+    \spnewtheorem{#1Aux}[\ifcsdef{countsame}{dummy}{#1}]{}{\bfseries\theoremtype}{{\bfseries\showname}\itshape}{}{}
+    \spnewtheorem{#1AuxCoq}[dummy]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\label{coq:\theoremname}}
+    \NewDocumentEnvironment{#1}{oo}%
+    {%
+      \IfValueT{##1}{\ifx&##1&%
+        \else\def\showname{\hspace{-0.6em} (##1)~}\fi}%
+      \def\theoremtype{\capitalisewords{#1}}%
+      \IfValueTF{##2}{\def\theoremname{##2}\begin{#1AuxCoq}}{\begin{#1Aux}}%
+        }%
+        {\IfValueTF{##2}{\end{#1AuxCoq}}{\end{#1Aux}}\def\theoremname{}\def\showname{}}}
+
+  \genFancyTheoremEnvironment{theorem}
+  \genFancyTheoremEnvironment{lemma}
+  \genFancyTheoremEnvironment{definition}
+  \genFancyTheoremEnvironment{fact}
+  \genFancyTheoremEnvironment{corollary}}
 {}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
