@@ -36,7 +36,7 @@
 \@ifpackageloaded{paralist}{%
   \newcommand{\coqitem}[1][]{\stepcounter{enumi}\item[{\coqlink[#1]{\labelenumi}}]}
 }{%
-  \@ifclassloaded{lipics-v2016}
+  \@ifclassloaded{lipics-v2019}
   {\newcommand{\coqitem}[1][]{\stepcounter{enumi}\item[{\coqlink[#1]{\labelenumi}}]}}
   {\newcommand{\coqitem}[1][]{\stepcounter{enumi}\item[{\coqlink[#1]{\theenumi.}}]}}
 }%
@@ -147,7 +147,7 @@
 %%%%% If the loaded class is Leibniz Center's LIPIcs
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\@ifclassloaded{lipics-v2016}
+\@ifclassloaded{lipics-v2019}
 {
   \def\ok{}
 
@@ -184,10 +184,11 @@
     \expandafter\newcommand\csname #1AuxCoqautorefname\endcsname{\csname #1autorefname\endcsname}
 
     \@ifpackageloaded{cleveref}{
-      \crefformat{#1Aux}{\capitalisewords{#1}~##2##1##3}
+      \crefformat{#1Aux}{#1~##2##1##3}
     }{}
     
     \newtheorem{#1Aux}[dummy]{\capitalisewords{#1}}
+    
     \NewDocumentEnvironment{#1}{oo}%
     {%
       \IfValueT{##2}{\def\theoremname{##2}}%
