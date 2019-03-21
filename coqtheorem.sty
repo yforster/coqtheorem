@@ -120,13 +120,31 @@
   \def\showname{}
   \def\theoremtype{}
 
-  \spnewtheorem{dummy}{}{}{}
+  \ifcsdef{nocountsections}
+  {\spnewtheorem{dummy}{}{}{}}
+  {\spnewtheorem{dummy}{}[section]{}{}}
+
 
   \newcommand{\genFancyTheoremEnvironment}[1]{%
     \ifcounter{#1}{}{\newcounter{#1}}
+
+    \ifcsdef{countsame}
+    {
+      \spnewtheorem{#1Aux}[dummy]{}{\bfseries\theoremtype}{{\bfseries\showname}\itshape}{}{}
+      \spnewtheorem{#1AuxCoq}[dummy]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\insertlabel{\theoremname}}      
+    }
+    {
+      \ifcsdef{nocountsections}
+      {
+        \spnewtheorem{#1Aux}[#1]{}{\bfseries\theoremtype}{{\bfseries\showname}\itshape}{}{}
+        \spnewtheorem{#1AuxCoq}[#1]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\insertlabel{\theoremname}}              
+      }
+      {
+        \spnewtheorem{#1Aux}{}[section]{\bfseries\theoremtype}{{\bfseries\showname}\itshape}{}{}
+        \spnewtheorem{#1AuxCoq}{}[section]{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\insertlabel{\theoremname}}                      
+      }
+    }
     
-    \spnewtheorem{#1Aux}[\ifcsdef{countsame}{dummy}{#1}]{}{\bfseries\theoremtype}{{\bfseries\showname}\itshape}{}{}
-    \spnewtheorem{#1AuxCoq}[dummy]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\insertlabel{\theoremname}}
     \NewDocumentEnvironment{#1}{oo}%
     {%
       \IfValueT{##1}{\ifx&##1&%
