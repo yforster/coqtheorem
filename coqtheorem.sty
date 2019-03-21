@@ -164,9 +164,49 @@
         }%
         {\IfValueTF{##2}{\end{#1AuxCoq}}{\end{#1Aux}}\def\theoremname{}\def\showname{}}}
 
+  \newcommand{\genFancyTheoremEnvironmentNoIt}[1]{%
+    \expandafter\providecommand\csname #1autorefname\endcsname{\capitalisewords{#1}}
+    \expandafter\newcommand\csname #1Auxautorefname\endcsname{\csname #1autorefname\endcsname}
+    \expandafter\newcommand\csname #1AuxCoqautorefname\endcsname{\csname #1autorefname\endcsname}
+
+    \ifcounter{#1}{}{\newcounter{#1}}
+
+    
+    \@ifpackageloaded{cleveref}{
+      \crefformat{#1AuxCoq}{#1~##2##1##3}
+      \crefformat{#1Aux}{#1~##2##1##3}
+    }{}
+    
+    \ifcsdef{countsame}
+    {
+      \spnewtheorem{#1Aux}[dummy]{}{\bfseries\theoremtype}{{\bfseries\showname}}{}{}
+      \spnewtheorem{#1AuxCoq}[dummy]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\insertlabel{\theoremname}}      
+    }
+    {
+      \ifcsdef{nocountsections}
+      {
+        \spnewtheorem{#1Aux}[#1]{}{\bfseries\theoremtype}{{\bfseries\showname}}{}{}
+        \spnewtheorem{#1AuxCoq}[#1Aux]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\insertlabel{\theoremname}}              
+      }
+      {
+        \spnewtheorem{#1Aux}{}[section]{\bfseries\theoremtype}{{\bfseries\showname}}{}{}
+        \spnewtheorem{#1AuxCoq}[#1Aux]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\insertlabel{\theoremname}}                      
+      }
+    }
+    
+    \NewDocumentEnvironment{#1}{oo}%
+    {%
+      \IfValueT{##1}{\ifx&##1&%
+        \else\def\showname{\hspace{-0.6em} (##1)~}\fi}%
+      \def\theoremtype{\capitalisewords{#1}}%
+      \IfValueTF{##2}{\def\theoremname{##2}\begin{#1AuxCoq}}{\begin{#1Aux}}%
+        }%
+        {\IfValueTF{##2}{\end{#1AuxCoq}}{\end{#1Aux}}\def\theoremname{}\def\showname{}}}
+
+  
   \genFancyTheoremEnvironment{theorem}
   \genFancyTheoremEnvironment{lemma}
-  \genFancyTheoremEnvironment{definition}
+  \genFancyTheoremEnvironmentNoIt{definition}
   \genFancyTheoremEnvironment{fact}
   \genFancyTheoremEnvironment{corollary}}
 {}
