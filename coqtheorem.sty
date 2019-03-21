@@ -126,6 +126,17 @@
 
 
   \newcommand{\genFancyTheoremEnvironment}[1]{%
+    \expandafter\providecommand\csname #1autorefname\endcsname{\capitalisewords{#1}}
+    \expandafter\newcommand\csname #1Auxautorefname\endcsname{\csname #1autorefname\endcsname}
+    \expandafter\newcommand\csname #1AuxCoqautorefname\endcsname{\csname #1autorefname\endcsname}
+
+    \ifcounter{#1}{}{\newcounter{#1}}
+
+    
+    \@ifpackageloaded{cleveref}{
+      \crefformat{#1AuxCoq}{\capitalisewords{#1}~##2##1##3}
+    }{}
+    
     \ifcounter{#1}{}{\newcounter{#1}}
 
     \ifcsdef{countsame}
