@@ -134,11 +134,10 @@
 
     
     \@ifpackageloaded{cleveref}{
-      \crefformat{#1AuxCoq}{\capitalisewords{#1}~##2##1##3}
+      \crefformat{#1AuxCoq}{#1~##2##1##3}
+      \crefformat{#1Aux}{#1~##2##1##3}
     }{}
     
-    \ifcounter{#1}{}{\newcounter{#1}}
-
     \ifcsdef{countsame}
     {
       \spnewtheorem{#1Aux}[dummy]{}{\bfseries\theoremtype}{{\bfseries\showname}\itshape}{}{}
@@ -148,11 +147,11 @@
       \ifcsdef{nocountsections}
       {
         \spnewtheorem{#1Aux}[#1]{}{\bfseries\theoremtype}{{\bfseries\showname}\itshape}{}{}
-        \spnewtheorem{#1AuxCoq}[#1]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\insertlabel{\theoremname}}              
+        \spnewtheorem{#1AuxCoq}[#1Aux]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\insertlabel{\theoremname}}              
       }
       {
         \spnewtheorem{#1Aux}{}[section]{\bfseries\theoremtype}{{\bfseries\showname}\itshape}{}{}
-        \spnewtheorem{#1AuxCoq}{}[section]{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\insertlabel{\theoremname}}                      
+        \spnewtheorem{#1AuxCoq}[#1Aux]{}{\bfseries \coqlink[\theoremname]{\theoremtype}}{{\bfseries\showname}\itshape\insertlabel{\theoremname}}                      
       }
     }
     
