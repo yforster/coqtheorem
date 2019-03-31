@@ -253,7 +253,8 @@
     \expandafter\newcommand\csname #1AuxCoqautorefname\endcsname{\csname #1autorefname\endcsname}
 
     \@ifpackageloaded{cleveref}{
-      \crefformat{#1Aux}{#1~##2##1##3}
+      \crefformat{#1Aux}{{\capitalisewords{#1}}~##2##1##3}
+      \Crefformat{#1Aux}{{\capitalisewords{#1}}~##2##1##3}
     }{}
     
     \newtheorem{#1Aux}[dummy]{\capitalisewords{#1}}
